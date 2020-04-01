@@ -11,4 +11,5 @@
     "num_epochs": 1,
     "num_filters": 32,
     "word2vec_path":"D:/我要回珠海/实战项目/MyDataSets/word2vec_from_weixin/word2vec/word2vec_wx"
+	"traindata_path":"D:/我要回珠海/实战项目/home/data/"
 }
