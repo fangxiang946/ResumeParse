@@ -1,0 +1,14 @@
+{
+    "batch_size": 128,
+    "dropout_keep_prob": 0.6,
+    "embedding_dim": 256,
+    "evaluate_every": 50,
+    "filter_sizes": "4,5,6",
+    "hidden_unit": 400,
+    "l2_reg_lambda": 0.0,
+    "max_pool_size": 10,
+    "non_static": false,
+    "num_epochs": 1,
+    "num_filters": 32,
+    "word2vec_path":"D:/我要回珠海/实战项目/MyDataSets/word2vec_from_weixin/word2vec/word2vec_wx"
+}
