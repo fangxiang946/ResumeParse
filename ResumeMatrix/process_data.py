@@ -124,7 +124,7 @@ def bulid_vocab(sentences):
     return vocabulary, vocabulary_inv
 
 
-def load_data(filename, cnum=1000):
+def load_data(filename,max_length, cnum=1000):
     df = pd.read_csv(filename)
     df = df[:cnum]
     selected = ['Category', 'Text']
@@ -143,7 +143,7 @@ def load_data(filename, cnum=1000):
     x_raw = df[selected[1]].apply(lambda x: clean_str(x)).tolist()
     y_raw = df[selected[0]].apply(lambda y: label_dict[y]).tolist()
 
-    x_raw = pad_sentences(x_raw)
+    x_raw = pad_sentences(x_raw,forced_sequence_length = max_length)
     vocabulary, vocabulary_inv = bulid_vocab(x_raw)
 
     x = np.array([[vocabulary[word] for word in sentence] for sentence in x_raw])
@@ -153,11 +153,11 @@ def load_data(filename, cnum=1000):
 
 
 def get_data(cnum=1000,test_size=0.9):
-    input_file = '../data/train.csv'
-    x_, y_, vocabulary, vocabulary_inv, df, labels = load_data(input_file,cnum=cnum)
-
     training_config = '../training_config.json'
     params = json.loads(open(training_config, encoding='utf-8').read())
+
+    input_file = params['data_path'] +'train.csv'
+    x_, y_, vocabulary, vocabulary_inv, df, labels = load_data(input_file,params['sentence_size'] ,cnum=cnum)
 
     # 给每个单词分配一个256维度的向量
     word_embeddings = load_embeddings(vocabulary, params['word2vec_path'])
@@ -175,3 +175,11 @@ def get_data(cnum=1000,test_size=0.9):
     logging.info('y_train:{},y_val:{},y_test:{}'.format(len(y_train), len(y_val), len(y_test)))
 
     return x_train,y_train,x_val,y_val,embedding_mat
+
+def get_testdata(cnum=1000):
+    training_config = '../training_config.json'
+    params = json.loads(open(training_config, encoding='utf-8').read())
+
+    input_file = params['data_path'] +'predict.csv'
+    x, y, vocabulary, vocabulary_inv, df, labels = load_data(input_file,params['sentence_size'] ,cnum=cnum)
+    return x, y
